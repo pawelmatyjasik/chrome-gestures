@@ -1,0 +1,20 @@
+{
+    "name": "Gestures navigation",
+    "version": "1.0",
+    "description": "Navigate with multitouch gestures",
+    "manifest_version": 2,
+    "content_scripts": [
+        {
+          "js": [
+            "app.js"
+          ],
+          "matches": [
+            "*://*/*"
+          ]
+        }
+      ],
+      "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+      }
+  }
