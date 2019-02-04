@@ -1,23 +1,19 @@
 import { isHorizontalSwipe, isForward } from "./gestures";
+import { fromEvent, timer } from "rxjs";
+import { throttle } from "rxjs/operators";
 
 (function() {
-  // todo: use rxjs debounce
-  var blockSwipeTemporarily = false;
-
-  document.addEventListener("mousewheel", function(e) {
-    if (!blockSwipeTemporarily && isHorizontalSwipe(e.deltaX, e.deltaY)) {
-      if (isForward(e.deltaX)) {
-        history.forward();
-      } else {
-        history.back();
+  fromEvent(window, "mousewheel")
+    .pipe(throttle(() => timer(1000)))
+    .subscribe(e => {
+      if (isHorizontalSwipe(e.deltaX, e.deltaY)) {
+        if (isForward(e.deltaX)) {
+          history.forward();
+        } else {
+          history.back();
+        }
       }
-
-      blockSwipeTemporarily = true;
-      setTimeout(function() {
-        blockSwipeTemporarily = false;
-      }, 1000);
-    }
-  });
+    });
 
   var closeTabAfterFirstClick = false;
 
