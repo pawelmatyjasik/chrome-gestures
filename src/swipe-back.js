@@ -1,6 +1,12 @@
 import { isHorizontalSwipe, isForward } from "./gestures";
 import { fromEvent, timer } from "rxjs";
-import { throttle, filter } from "rxjs/operators";
+import {
+  buffer,
+  debounceTime,
+  map,
+  throttle,
+  filter
+} from "rxjs/operators";
 
 (function() {
   fromEvent(window, "mousewheel")
@@ -16,23 +22,15 @@ import { throttle, filter } from "rxjs/operators";
       }
     });
 
-  var closeTabAfterFirstClick = false;
+  const rightClick = fromEvent(document, "contextmenu");
 
-  document.addEventListener("contextmenu", function(e) {
-    if (closeTabAfterFirstClick) {
-      closeTabAfterFirstClick = false;
-      var event = document.createEvent("Event");
-      event.initEvent("hello");
-      document.dispatchEvent(event);
-    } else {
-      closeTabAfterFirstClick = true;
-      setTimeout(function() {
-        closeTabAfterFirstClick = false;
-      }, 1000);
-    }
-  });
-
-  document.addEventListener("hello", function(data) {
-    chrome.runtime.sendMessage("test");
-  });
+  rightClick
+    .pipe(
+      buffer(rightClick.pipe(debounceTime(250))),
+      map(list => list.length),
+      filter(l => l === 2)
+    )
+    .subscribe(() => {
+      chrome.runtime.sendMessage("test");
+    });
 })();
