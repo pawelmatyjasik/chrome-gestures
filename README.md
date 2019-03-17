@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/pawelmatyjasik/chrome-gestures.svg?branch=master)](https://travis-ci.com/pawelmatyjasik/chrome-gestures)
+
 # Goal
 
 Improving Chrome UI on laptops by adding multitoch gestures support.
