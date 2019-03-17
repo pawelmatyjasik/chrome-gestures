@@ -16,10 +16,10 @@ describe("horizontal swipe recognition", () => {
 
 describe("forward swipe recognition", () => {
   it("recognizes forward swipe when delta x positive", () => {
-    expect(isForward(1.4).toBe(true));
+    expect(isForward(1.4)).toBe(true);
   });
 
   it("denies forward swipe when delta x negative", () => {
-    expect(isForward(-1.2).toBe(false));
+    expect(isForward(-1.2)).toBe(false);
   });
 });
